@@ -1,4 +1,4 @@
-import {spring} from 'remotion';
+import { Img, Audio, staticFile } from 'remotion';
 import {
 	AbsoluteFill,
 	interpolate,
@@ -6,60 +6,64 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import {Logo} from './HelloWorld/Logo';
-import {Subtitle} from './HelloWorld/Subtitle';
-import {Title} from './HelloWorld/Title';
+import { Logo } from './HelloWorld/Logo';
+import { Subtitle } from './HelloWorld/Subtitle';
+import { Title } from './HelloWorld/Title';
 
 export const HelloWorld: React.FC<{
 	titleText: string;
 	titleColor: string;
-}> = ({titleText, titleColor}) => {
+}> = ({ titleText, titleColor }) => {
 	const frame = useCurrentFrame();
-	const {durationInFrames, fps} = useVideoConfig();
+	const { durationInFrames, fps } = useVideoConfig();
 
-	// Animate from 0 to 1 after 25 frames
-	const logoTranslationProgress = spring({
-		frame: frame - 25,
-		fps,
-		config: {
-			damping: 100,
-		},
-	});
-
-	// Move the logo up by 150 pixels once the transition starts
-	const logoTranslation = interpolate(
-		logoTranslationProgress,
-		[0, 1],
-		[0, -150]
-	);
-
-	// Fade out the animation at the end
-	const opacity = interpolate(
+	const zoomIn = interpolate(
 		frame,
-		[durationInFrames - 25, durationInFrames - 15],
-		[1, 0],
-		{
-			extrapolateLeft: 'clamp',
-			extrapolateRight: 'clamp',
-		}
-	);
+		[0, 75],
+		[1, 2]
+	)
+	const zoomOut = interpolate(
+		frame,
+		[75, 155],
+		[2, 1.25]
+	)
 
-	// A <AbsoluteFill> is just a absolutely positioned <div>!
+	const turnRight = interpolate(
+		frame,
+		[155, 300],
+		[0, 10]
+	)
+
 	return (
-		<AbsoluteFill style={{backgroundColor: 'white'}}>
-			<AbsoluteFill style={{opacity}}>
-				<AbsoluteFill style={{transform: `translateY(${logoTranslation}px)`}}>
-					<Logo />
-				</AbsoluteFill>
-				{/* Sequences can shift the time for its children! */}
-				<Sequence from={35}>
-					<Title titleText={titleText} titleColor={titleColor} />
-				</Sequence>
-				{/* The subtitle will only enter on the 75th frame. */}
-				<Sequence from={75}>
-					<Subtitle />
-				</Sequence>
-			</AbsoluteFill>
+		<AbsoluteFill style={{ backgroundColor: 'black', display: 'block', justifyItems: 'center', justifyContent: 'center' }}>
+			<Audio src={staticFile("passion-trim.mp3")} />
+			<Sequence from={0} durationInFrames={75}>
+				<Img
+					src={staticFile("tmp.000.png")}
+					style={{
+						margin: 'auto',
+						display: 'block',
+						transform: `scale(${zoomIn})`
+					}} />;
+			</Sequence>
+			<Sequence from={75} durationInFrames={80}>
+				<Img
+					src={staticFile("tmp.000.png")}
+					style={{
+						margin: 'auto',
+						display: 'block',
+						transform: `scale(${zoomOut})`
+					}} />;
+			</Sequence>
+			<Sequence from={155} durationInFrames={Infinity}>
+				<Img
+					src={staticFile("tmp.000.png")}
+					style={{
+						margin: 'auto',
+						display: 'block', 
+						transform: `rotate(${turnRight}turn)`
+					}} />;
+			</Sequence>
 		</AbsoluteFill>
 	);
 };
