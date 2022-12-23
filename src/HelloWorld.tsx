@@ -6,9 +6,7 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import { Logo } from './HelloWorld/Logo';
-import { Subtitle } from './HelloWorld/Subtitle';
-import { Title } from './HelloWorld/Title';
+
 
 export const HelloWorld: React.FC<{
 	titleText: string;
@@ -17,45 +15,106 @@ export const HelloWorld: React.FC<{
 	const frame = useCurrentFrame();
 	const { durationInFrames, fps } = useVideoConfig();
 
+	const endFrame = 30 ; 
+	const firstPicEndFrame: number = 12;
+	const secondPicStartFrame = firstPicEndFrame;
+	const secondPicEndFrame = secondPicStartFrame + firstPicEndFrame;
+
 	const zoomIn = interpolate(
 		frame,
-		[0, 75],
-		[1, 2]
+		[0, endFrame],
+		[1, 3],
+		{   extrapolateRight: "clamp", }
 	)
 	const zoomOut = interpolate(
 		frame,
-		[75, 155],
-		[2, 1.25]
+		[endFrame, endFrame + endFrame],
+		[3, 1.0],
+		{   extrapolateRight: "clamp", } 
+	)
+
+	const zoomOut2 = interpolate(
+		frame,
+		[155, 200],
+		[3, 1.0],
+		{   extrapolateRight: "clamp", } 
 	)
 
 	const turnRight = interpolate(
 		frame,
-		[155, 300],
-		[0, 10]
+		[0, endFrame],
+		[0, .03],
+		{   extrapolateRight: "clamp", } 
+	)
+
+	const turnLeft = interpolate(
+		frame,
+		[endFrame, endFrame + endFrame],
+		[.03, 0],
+		{   extrapolateRight: "clamp", } 
+	)
+
+	const fallFromSky = interpolate(
+		frame,
+		[endFrame + endFrame -5, endFrame + endFrame + endFrame+ endFrame],
+		[-2000, 3000],
+		{   extrapolateRight: "clamp", }
+	)
+	
+	const comeUpFromBottom = interpolate(
+		frame,
+		[endFrame + endFrame + endFrame  -5, endFrame + endFrame + endFrame + endFrame + 20],
+		[4000, -3000],
+		{   extrapolateRight: "clamp", }
 	)
 
 	return (
 		<AbsoluteFill style={{ backgroundColor: 'black', display: 'block', justifyItems: 'center', justifyContent: 'center' }}>
 			<Audio src={staticFile("passion-trim.mp3")} />
-			<Sequence from={0} durationInFrames={75}>
+			<Sequence from={0} durationInFrames={endFrame}>
 				<Img
-					src={staticFile("tmp.000.png")}
+					src={staticFile("tmp.005.png")}
 					style={{
-						margin: 'auto',
-						display: 'block',
-						transform: `scale(${zoomIn})`
+						transform: `scale(${zoomIn}) rotate(${turnRight}turn)`
 					}} />;
 			</Sequence>
-			<Sequence from={75} durationInFrames={80}>
+			<Sequence from={endFrame} durationInFrames={88 }>
 				<Img
-					src={staticFile("tmp.000.png")}
+					src={staticFile("tmp.005.png")}
 					style={{
-						margin: 'auto',
-						display: 'block',
-						transform: `scale(${zoomOut})`
+						transform: `scale(${zoomOut}) rotate(${turnLeft}turn) `,
+					}} />;
+			</Sequence>
+			<Sequence from={117} durationInFrames={40 }>
+				<Img
+					src={staticFile("tmp.005.png")}
+					style={{
+						filter: `invert(.9 )`,
+					}} />;
+			</Sequence>
+			<Sequence from={endFrame  + endFrame - 10} durationInFrames={endFrame+ 20}>
+				<Img
+					src={staticFile("tmp.006.png")}
+					style={{
+						transform: `translate(0px, ${fallFromSky}px)`
+					}} />;
+			</Sequence>
+			<Sequence from={endFrame  + endFrame + endFrame+10} durationInFrames={endFrame+ 20}>
+				<Img
+					src={staticFile("tmp.006.png")}
+					style={{
+						transform: `translate(0px, ${comeUpFromBottom}px)`
 					}} />;
 			</Sequence>
 			<Sequence from={155} durationInFrames={Infinity}>
+				<Img
+					src={staticFile("tmp.007.png")}
+					style={{
+						transform: `scale(${zoomOut2})`
+					}} 
+					/>;
+			</Sequence>
+			{/* <Sequence from={155} durationInFrames={Infinity}>
 				<Img
 					src={staticFile("tmp.000.png")}
 					style={{
@@ -63,7 +122,7 @@ export const HelloWorld: React.FC<{
 						display: 'block', 
 						transform: `rotate(${turnRight}turn)`
 					}} />;
-			</Sequence>
+			</Sequence> */}
 		</AbsoluteFill>
 	);
 };
