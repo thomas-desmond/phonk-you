@@ -2,7 +2,14 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+const asyncFunc = async () => {
+  const response = await fetch("/api/renderMediaOnLambda") 
+  const data = await response.json();
+  console.log("This my data, ", data);
+}
+
 export default function Home() {
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,6 +22,10 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <button onClick={asyncFunc}>
+          Generate a video? 
+        </button>
 
         <p className={styles.description}>
           Get started by editing{' '}
