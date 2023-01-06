@@ -14,14 +14,10 @@ export const RemotionRoot: React.FC = () => {
 				component={HelloWorld}
 				durationInFrames={225}
 				fps={30}
-				width={1080}
-				height={1920}
+				width={720}
+				height={1280}
 				// You can override these props for each render:
 				// https://www.remotion.dev/docs/parametrized-rendering
-				defaultProps={{
-					titleText: 'Welcome to Remotion',
-					titleColor: 'black',
-				}}
 			/>
 			{/* Mount any React component to make it show up in the sidebar and work on it individually! */}
 			<Composition
