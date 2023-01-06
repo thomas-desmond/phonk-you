@@ -13,20 +13,22 @@ export default async function handler(
   //   body: req.body,
   //   signatureHeader: req.headers["x-remotion-signature"] as string,
   // });
-  console.log("In The Webhook: ", req );
+  console.log("In The Webhook: ");
 
   //If code reaches this path, the webhook is authentic.
   if (req.body) {
     const payload = req.body as WebhookPayload;
     if (payload.type === "success") {
-      console.log("Good Stuff");
+      console.log("Good Stuff", payload.outputUrl);
       console.log("That bitch cost: ", payload.costs.estimatedCost);
       // ...
     } else if (req.body.type === "timeout") {
       console.log("Bad Stuff");
       // ...
     }
-
+  }
+  else {
+    console.log("No BODY?!?")
   }
 
   res.status(200).json({

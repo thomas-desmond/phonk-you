@@ -1,14 +1,27 @@
+import { useS3Upload } from 'next-s3-upload'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useState } from 'react'
+import { UrlWithStringQuery } from 'url'
 import styles from '../styles/Home.module.css'
 
-const asyncFunc = async () => {
-  const response = await fetch("/api/renderMediaOnLambda") 
-  const data = await response.json();
-  console.log("This my data, ", data);
-}
-
 export default function Home() {
+  let [imageUrl, setImageUrl] = useState("");
+  let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+
+  let handleFileChange = async (file: File) => {
+    let { url } = await uploadToS3(file);
+    setImageUrl(url);
+  };
+
+  const asyncFunc = async () => {
+    const response = await fetch("/api/renderMediaOnLambda", {
+      method: "POST",
+      body: JSON.stringify({ imageUrl: imageUrl })
+    })
+    const data = await response.json();
+    console.log("This my data, ", data);
+  }
 
   return (
     <div className={styles.container}>
@@ -24,8 +37,15 @@ export default function Home() {
         </h1>
 
         <button onClick={asyncFunc}>
-          Generate a video? 
+          Generate a video?
         </button>
+        <div>
+          <FileInput onChange={handleFileChange} />
+
+          <button onClick={openFileDialog}>Upload file</button>
+
+          {imageUrl && <img src={imageUrl} />}
+        </div>
 
         <p className={styles.description}>
           Get started by editing{' '}
