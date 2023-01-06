@@ -3,9 +3,11 @@ import { renderMediaOnLambda } from '@remotion/lambda/client'
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log(req.body);
   const inputData = JSON.parse(req.body);
-  console.log("Did I make it?", inputData.imageUrl);
+  console.log("Did I make it?", inputData.imageUrls);
   
+ 
   const webhook: RenderMediaOnLambdaInput["webhook"] = {
     url: " ",
     secret: null,
@@ -18,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     serveUrl:
       "https://remotionlambda-useast1-twk7153r7y.s3.us-east-1.amazonaws.com/sites/my-video/index.html",
     codec: "h264",
-    inputProps: {imageUrl: inputData.imageUrl},
+    inputProps: {imageUrls: inputData.imageUrls},
     webhook: {
       url: "https://c41d-98-176-233-69.ngrok.io/api/remotion/webhook",
       secret: null

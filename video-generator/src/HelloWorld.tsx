@@ -10,8 +10,7 @@ import {
 
 export const HelloWorld: React.FC<{ imageLink:string }> = ({ imageLink }) => {
 	console.log("Image Link ", imageLink)
-	const { imageUrl } = getInputProps(); // "world"
-	console.log("Image URL ", imageUrl)
+	const { imageUrls } = getInputProps();
 
 	const frame = useCurrentFrame();
 	const { durationInFrames, fps } = useVideoConfig();
@@ -75,7 +74,7 @@ export const HelloWorld: React.FC<{ imageLink:string }> = ({ imageLink }) => {
 
 				<Sequence from={0} durationInFrames={endFrame}>
 					<Img
-						src={imageUrl}
+						src={imageUrls[0]}
 						style={{
 							transform: `scale(${zoomIn}) rotate(${turnRight}turn)`
 						}}
@@ -86,35 +85,35 @@ export const HelloWorld: React.FC<{ imageLink:string }> = ({ imageLink }) => {
 
 			<Sequence from={endFrame} durationInFrames={88}>
 				<Img
-					src={staticFile("tmp.005.png")}
+					src={imageUrls[1]}
 					style={{
 						transform: `scale(${zoomOut}) rotate(${turnLeft}turn) `,
 					}} />;
 			</Sequence>
 			<Sequence from={117} durationInFrames={40}>
 				<Img
-					src={staticFile("tmp.005.png")}
+					src={imageUrls[1]}
 					style={{
 						filter: `invert(.9 )`,
 					}} />;
 			</Sequence>
 			<Sequence from={endFrame + endFrame - 10} durationInFrames={endFrame + 20}>
 				<Img
-					src={staticFile("tmp.006.png")}
+					src={imageUrls[2]}
 					style={{
 						transform: `translate(0px, ${fallFromSky}px)`
 					}} />;
 			</Sequence>
 			<Sequence from={endFrame + endFrame + endFrame + 10} durationInFrames={endFrame + 20}>
 				<Img
-					src={staticFile("tmp.006.png")}
+					src={imageUrls[3]}
 					style={{
 						transform: `translate(0px, ${comeUpFromBottom}px)`
 					}} />;
 			</Sequence>
 			<Sequence from={155} durationInFrames={Infinity}>
 				<Img
-					src={staticFile("tmp.007.png")}
+					src={imageUrls[4]}
 					style={{
 						transform: `scale(${zoomOut2})`
 					}}
