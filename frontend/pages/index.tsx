@@ -132,8 +132,8 @@ export default function Home() {
         <Grid.Col xs={12}>
           <h1>Phonk You</h1>
 
-          <button onClick={generateVideo}>
-            Generate a video?
+          <button className={classes.generateButton} onClick={generateVideo}>
+            Click me after choosing your 5 .png or .jpg images below. After maybe 15 - 25 seconds your video will be at bottom of page
           </button>
           { loading && <Loader />}
 
@@ -194,6 +194,9 @@ const useStyles = createStyles((theme) => ({
   imageUpload: {
     minHeight: '200px',
     display: 'flex'
+  },
+  generateButton: {
+    marginBottom: '3rem'
   }
 }
 ))
