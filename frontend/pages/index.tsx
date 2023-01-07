@@ -1,12 +1,15 @@
-import { Container, createStyles, Grid } from '@mantine/core'
+import { Container, createStyles, Grid, Loader } from '@mantine/core'
 import { useS3Upload } from 'next-s3-upload'
 import { useEffect, useState } from 'react'
+
 
 export default function Home() {
   const { classes } = useStyles();
   let [bucketName, setBucketName] = useState<string>("remotionlambda-useast1-twk7153r7y");
   let [renderId, setRenderId] = useState<string>("");
   let [videoUrl, setVideoUrl] = useState<string>("");
+  let [loading, setLoading] = useState<boolean>(false);
+
 
   // let [imageUrls, setImageUrls] = useState<string[]>(
   //   ["https://phonk-you-images.s3.amazonaws.com/next-s3-uploads/fefc0190-9702-4980-86d1-d5dd9f918459/dev-rel-mentorship.png",
@@ -103,6 +106,7 @@ export default function Home() {
   };
 
   async function originalPoll(fn: any, end: any) {
+    setLoading(true)
     async function checkCondition() {
       const result = await fn();
       const data = await result.json()
@@ -110,6 +114,8 @@ export default function Home() {
       if (data.progress.done) {
         console.log("New Video Url: ", data.progress.outputFile)
         setVideoUrl(data.progress.outputFile)
+        setLoading(false)
+
         end();
       } else {
         setTimeout(checkCondition, 3000);
@@ -129,6 +135,7 @@ export default function Home() {
           <button onClick={generateVideo}>
             Generate a video?
           </button>
+          { loading && <Loader />}
 
           <div className={classes.imageUpload}>
             <input
