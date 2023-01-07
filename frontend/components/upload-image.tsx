@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core"
+import { createStyles, FileInput } from "@mantine/core"
 import { useS3Upload } from "next-s3-upload";
 import { useState } from "react";
 
@@ -8,8 +8,7 @@ export function UploadImage({ imageIndex, updateImageUrl }: { imageIndex: number
   let { uploadToS3 } = useS3Upload();
 
 
-  let handleFileChange = async (event: any) => {
-    const file = event.target.files[0]
+  let handleFileChange = async (file: any) => {
     let { url } = await uploadToS3(file);
     setImageUrl(url);
     updateImageUrl(url, imageIndex)
@@ -18,10 +17,17 @@ export function UploadImage({ imageIndex, updateImageUrl }: { imageIndex: number
 
   return (
     <div className={classes.imageUpload}>
-      <input
-        type="file"
+      <FileInput
+        placeholder="Pick an image"
+        label={`Image ${imageIndex + 1}`}
+        description=".png or .jpg only"
+        radius="md"
+        size="lg"
+        withAsterisk
+        className={classes.fileInput}
         onChange={handleFileChange}
       />
+
       <img className={classes.imageThumbnail} src={imageUrl} />
     </div>
   )
@@ -35,5 +41,9 @@ const useStyles = createStyles((theme) => ({
     minHeight: '200px',
     display: 'flex'
   },
+  fileInput: {
+    width: '40%',
+    marginRight: '5rem'
+  }
 }
 ))
