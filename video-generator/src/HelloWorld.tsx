@@ -70,7 +70,7 @@ export const HelloWorld: React.FC<{ imageLink:string }> = ({ imageLink }) => {
 
 	return (
 		<AbsoluteFill style={{ backgroundColor: 'black', display: 'block', justifyItems: 'center', justifyContent: 'center' }}>
-			{/* <Audio src={staticFile("passion-trim.mp3")} /> */}
+			<Audio src={staticFile("passion-trim.mp3")} />
 
 				<Sequence from={0} durationInFrames={endFrame}>
 					<Img

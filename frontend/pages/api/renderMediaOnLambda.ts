@@ -21,10 +21,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       "https://remotionlambda-useast1-twk7153r7y.s3.us-east-1.amazonaws.com/sites/my-video/index.html",
     codec: "h264",
     inputProps: {imageUrls: inputData.imageUrls},
-    webhook: {
-      url: "https://c41d-98-176-233-69.ngrok.io/api/remotion/webhook",
-      secret: null
-    }
+    // webhook: {
+    //   url: "https://www.phonkyou.com/api/remotion/webhook",
+    //   secret: null
+    // }
   });
   console.log("returning")
   res.status(200).json({ bucketName: bucketName, renderId: renderId })
