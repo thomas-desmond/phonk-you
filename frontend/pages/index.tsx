@@ -15,6 +15,8 @@ export default function Home() {
   let [imageUrls, setImageUrls] = useState<string[]>([defaultImageUrl, defaultImageUrl, defaultImageUrl, defaultImageUrl, defaultImageUrl]);
 
   const generateVideo = async () => {
+    setLoading(true)
+
     const response = await fetch("/api/renderMediaOnLambda", {
       method: "POST",
       body: JSON.stringify({ imageUrls: imageUrls })
@@ -62,6 +64,8 @@ export default function Home() {
   }
 
   const shouldDisable = () => {
+    if(loading) return true;
+
     return !imageUrls.indexOf(defaultImageUrl);
   }
 
